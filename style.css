@@ -1,0 +1,15 @@
+body{
+    background-color: #85a2a8;
+    font-family: 'Times New Roman', Times, serif;
+}
+#authentication{
+    width: 350px;
+    margin: auto;  
+    margin-top: 70px; 
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    background-color: #f0f2f3;
+    text-align: center;
+}
