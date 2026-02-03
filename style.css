@@ -1,15 +1,127 @@
 body{
-    background-color: #85a2a8;
+    background-color: #4F7963;
     font-family: 'Times New Roman', Times, serif;
 }
 #authentication{
     width: 350px;
     margin: auto;  
-    margin-top: 70px; 
+    margin-top: 12em; 
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
-     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    background-color: #f0f2f3;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    background-color: #F8F9FA;
     text-align: center;
+    justify-content: center;
 }
+
+#togglebuttons{
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 50px;
+  margin-bottom: 35px;
+  transition: transform 0.4s ease;
+  /*background-color: rgb(36, 223, 223);*/
+}
+
+#togglebuttons.move-up {
+  transform: translateY(-40px);
+}
+
+.text{
+    text-decoration: underline;
+    font-weight: bold;
+    color: #FFC107;
+}
+
+/*#registerbtn{
+    padding: 10px 20px;
+    background-color: #28A745;
+    color: #FFC107;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-transform: uppercase;
+}
+
+
+#loginbtn{
+    padding: 10px 20px;
+    background-color: #28A745;
+    color: #FFC107;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-transform: uppercase;
+}*/
+
+.toggle-btn {
+  padding: 8px 16px;
+  border: 2px;
+  background: #28A745;
+  color: #FFC107;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+}
+
+/* ACTIVE STATE */
+.toggle-btn.active {
+  background-color: #4F7963;
+  color: white;
+}
+
+
+/*resposiveness*/
+@media (max-width: 768px) {
+    #authentication{
+        width: 85%;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    #authentication {
+        width: 90%;
+        padding: 12px;
+        margin: 10px auto;
+        border-radius: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    #togglebuttons {
+        gap: 10px;
+        margin: 20px 0;
+    }
+}
+
+@media (max-width: 320px) {
+    #authentication {
+        width: 95%;
+        padding: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+}
+
+@media (max-width: 320px) {
+    .toggle-btn {
+        padding: 6px 10px;
+        font-size: 12px;
+        max-width: 90px;
+    }
+}
+
+/*#regesterform{
+    display: none;
+}
+
+#loginform{
+    display: none;
+}*/
+

@@ -8,30 +8,30 @@
 </head>
 <body>
     <div id="authentication">
-        <div id = "toggle buttons">
-        <button id="regesterbtn">regester</button>
-        <button id="loginbtn">login</button>
+        <div id = "togglebuttons">
+        <button id="registerbtn" class="toggle-btn">register</button>
+        <button id="loginbtn" class="toggle-btn">login</button>
             </div>
 
-            <div id="regesterform">
+    
                  <!-- Registration Form -->
-                <form id="registerForm">
-                    <h2>Register</h2>
+                <form id="displayregisterForm" style="display: none;">
+                    <h2 class="text">Register</h2>
                     <input type="text" placeholder="Username" id="regUsername" required><br><br>
                     <input type="email" placeholder="Email" id="regEmail" required><br><br>
                     <input type="password" placeholder="Password" id="regPassword" required><br><br>
                     <button type="submit">Register</button>
                 </form>
-            </div>
-            <div id="loginform">
+            
+            
                 <!-- Login Form -->
-                <form id="loginForm">
-                    <h2>Login</h2>
+                <form id="displayloginForm" style="display: none;">
+                    <h2 class="text">Login</h2>
                     <input type="text" placeholder="Username" id="loginUsername" required><br><br>
                     <input type="password" placeholder="Password" id="loginPassword" required><br><br>
                     <button type="submit">Login</button>
                 </form>
-            </div>
+            
 
 
 

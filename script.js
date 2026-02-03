@@ -1,12 +1,28 @@
-const displayregesterbtn = document.getElementById('regesterbtn');
-const displayloginbtn = document.getElementById('loginbtn');
+const toggleButtons = document.getElementById('togglebuttons');
 
-displayloginbtn.addEventListener('click', () => {
-  loginForm.style.display = 'block';
-  registerForm.style.display = 'none';
+const registerbtn = document.getElementById('registerbtn');
+const loginbtn = document.getElementById('loginbtn');
+
+const displayregisterForm = document.getElementById('displayregisterForm');
+const displayloginForm = document.getElementById('displayloginForm');
+
+registerbtn.addEventListener('click', () => {
+  displayregisterForm.style.display = 'block';
+  displayloginForm.style.display = 'none';
+
+  registerbtn.classList.add('active');
+  loginbtn.classList.remove('active');
+
+  toggleButtons.classList.add('move-up');
 });
 
-displayregesterbtn.addEventListener('click', () => {
-  registerForm.style.display = 'block';
-  loginForm.style.display = 'none';
+loginbtn.addEventListener('click', () => {
+  displayregisterForm.style.display = 'none';
+  displayloginForm.style.display = 'block';
+
+  registerbtn.classList.remove('active');
+  loginbtn.classList.add('active');
+
+  toggleButtons.classList.add('move-up');
+
 });
