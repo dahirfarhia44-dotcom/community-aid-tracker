@@ -17,19 +17,19 @@
                  <!-- Registration Form -->
                 <form id="displayregisterForm" style="display: none;">
                     <h2 class="text">Register</h2>
-                    <input type="text" placeholder="Username" id="regUsername" required><br><br>
-                    <input type="email" placeholder="Email" id="regEmail" required><br><br>
-                    <input type="password" placeholder="Password" id="regPassword" required><br><br>
-                    <button type="submit">Register</button>
+                    <input type="text" placeholder="Username" id="regUsername" class="input" required><br><br>
+                    <input type="email" placeholder="Email" id="regEmail" class="input" required><br><br>
+                    <input type="password" placeholder="Password" id="regPassword" class="input" required><br><br>
+                    <button type="submit" class="submit">Register</button>
                 </form>
             
             
                 <!-- Login Form -->
                 <form id="displayloginForm" style="display: none;">
                     <h2 class="text">Login</h2>
-                    <input type="text" placeholder="Username" id="loginUsername" required><br><br>
-                    <input type="password" placeholder="Password" id="loginPassword" required><br><br>
-                    <button type="submit">Login</button>
+                    <input type="text" placeholder="Username" id="loginUsername" class="input" required><br><br>
+                    <input type="password" placeholder="Password" id="loginPassword" class="input" required><br><br>
+                    <button type="submit" class="submit">Login</button>
                 </form>
             
 
@@ -38,6 +38,13 @@
 
     </div>
 
+    <!--dashboard-->
+    <div id="dashboard-page" style="display: none;">
+    <h1>Welcome <span id="welcome-username"></span></h1>
+  <button id="logout-btn">Logout</button>
+        </div>
+  <!-- Link your dashboard.js file 
+  <script src="dashboard.js"></script>-->
 
 
 

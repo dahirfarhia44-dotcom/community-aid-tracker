@@ -5,7 +5,7 @@ body{
 #authentication{
     width: 350px;
     margin: auto;  
-    margin-top: 12em; 
+    margin-top: 10em; 
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -32,7 +32,28 @@ body{
 .text{
     text-decoration: underline;
     font-weight: bold;
+    color: #E6B800;
+    text-transform: uppercase;
+
+}
+
+.input{
+    width: 80%;
+    padding: 8px;
+    margin: 0.5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+.submit{
+    padding: 9px 15px;
+    background-color: #28A745;
     color: #FFC107;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-transform: uppercase;
 }
 
 /*#registerbtn{
@@ -117,6 +138,56 @@ body{
     }
 }
 
+
+@media (max-width: 768px) {
+    .text {
+        font-size: 16px;
+    }
+
+    .toggle-btn {
+        font-size: 14px;
+        padding: 6px 12px;
+    }
+
+    .submit {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+}
+
+/* Mobile (max-width: 480px) */
+@media (max-width: 480px) {
+    .text {
+        font-size: 14px;
+    }
+
+    .toggle-btn {
+        font-size: 12px;
+        padding: 5px 10px;
+    }
+
+    .submit {
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+}
+
+/* Very small screens (max-width: 320px) */
+@media (max-width: 320px) {
+    .text {
+        font-size: 12px;
+    }
+
+    .toggle-btn {
+        font-size: 10px;
+        padding: 4px 8px;
+    }
+
+    .submit {
+        font-size: 10px;
+        padding: 5px 8px;
+    }
+}
 /*#regesterform{
     display: none;
 }
