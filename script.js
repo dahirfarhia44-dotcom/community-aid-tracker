@@ -66,11 +66,13 @@ displayregisterForm.addEventListener('submit', (e) => {
 
   let users = JSON.parse(localStorage.getItem('users')) || []; //get existing users or start with empty array
 
-  const newUser = { //create new user object
-    username: regUsername.value,
-    email: regEmail.value,
-    password: regPassword.value
-  };
+  const newUser = {
+  username: regUsername.value,
+  email: regEmail.value,
+  password: regPassword.value,
+  role: "user"   // default role for all registered users is "user"
+};
+
 
 const userExists = users.find(
   u => u.username === regUsername.value || u.email === regEmail.value
@@ -125,10 +127,11 @@ displayloginForm.addEventListener('submit', (e) => {
 
 // DASHBOARD DISPLAY
 function showDashboard(user) {
-  authPage.style.display = 'none';
+  authPage.classList.add('d-none');
   dashboardPage.classList.remove('d-none');
   welcomeUsername.textContent = user.username;
 }
+
 
 // AID RECORDING & DISPLAY TOGGLE
 addAidBtn.addEventListener('click', () => {
@@ -169,6 +172,11 @@ loginbtn.classList.remove('btn-outline-success');
 registerbtn.classList.add('btn-outline-success');
 registerbtn.classList.remove('btn-success');
 
+// reset dashboard sections
+addAidSection.classList.add('d-none');
+recordsSection.classList.add('d-none');
+
+
 };
 // ===== AID RECORDING =====
 const aidForm = document.getElementById('aid-form');
@@ -199,10 +207,14 @@ aidForm.addEventListener('submit', (e) => {
 function loadAidRecords() {
   const tbody = document.getElementById('aid-table-body');
   const aids = JSON.parse(localStorage.getItem('aids')) || [];
+  const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
 
   tbody.innerHTML = '';
 
   aids.forEach(aid => {
+    const isOwner = aid.recordedBy === loggedInUser.username;
+    const isAdmin = loggedInUser.role === 'admin'; // ✅ check admin role
+
     const row = document.createElement('tr');
     row.innerHTML = `
       <td>${aid.type}</td>
@@ -211,13 +223,21 @@ function loadAidRecords() {
       <td>${aid.date}</td>
       <td>${aid.recordedBy}</td>
       <td>
-        <button class="btn btn-sm btn-warning" onclick="editAid(${aid.id})">Edit</button>
-        <button class="btn btn-sm btn-danger" onclick="deleteAid(${aid.id})">Delete</button>
+        ${
+          isOwner || isAdmin  // ✅ allow if owner OR admin
+            ? `
+              <button class="btn btn-sm btn-warning" onclick="editAid(${aid.id})">Edit</button>
+              <button class="btn btn-sm btn-danger" onclick="deleteAid(${aid.id})">Delete</button>
+            `
+            : `<span class="text-muted">No access</span>`
+        }
       </td>
     `;
     tbody.appendChild(row);
   });
 }
+
+
 
 
 // ===== AID RECORD EDITING =====
@@ -226,4 +246,25 @@ function deleteAid(id) {
   aids = aids.filter(aid => aid.id !== id);
   localStorage.setItem('aids', JSON.stringify(aids));
   loadAidRecords();
+}
+
+// When user clicks "Edit", we load the aid data into the form and delete the old record.
+function editAid(id) {
+  const aids = JSON.parse(localStorage.getItem('aids')) || [];
+  const aid = aids.find(a => a.id === id);
+
+  if (!aid) return;
+
+  // show the add/edit form
+  addAidSection.classList.remove('d-none');
+  recordsSection.classList.add('d-none');
+
+  // prefill the form
+  aidType.value = aid.type;
+  aidQuantity.value = aid.quantity;
+  aidBeneficiary.value = aid.beneficiary;
+  aidDate.value = aid.date;
+
+  // remove old record so resaving = update
+  deleteAid(id);
 }
