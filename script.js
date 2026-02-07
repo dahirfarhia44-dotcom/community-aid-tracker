@@ -32,6 +32,10 @@ const aidDate = document.getElementById('aidDate');
 
 
 
+const welcomeBio = document.getElementById('welcome-bio');
+
+
+
 //toggle-btns
 registerbtn.addEventListener('click', () => {
   // show register form
@@ -66,14 +70,16 @@ displayregisterForm.addEventListener('submit', (e) => {
 
   let users = JSON.parse(localStorage.getItem('users')) || []; //get existing users or start with empty array
 
-  const newUser = {
+ const newUser = {
   username: regUsername.value,
   email: regEmail.value,
   password: regPassword.value,
-  role: "user"   // default role for all registered users is "user"
+  role: "user",
+  bio: ""   // default empty bio
 };
 
 
+// Check if username or email already exists
 const userExists = users.find(
   u => u.username === regUsername.value || u.email === regEmail.value
 );
@@ -129,8 +135,31 @@ displayloginForm.addEventListener('submit', (e) => {
 function showDashboard(user) {
   authPage.classList.add('d-none');
   dashboardPage.classList.remove('d-none');
-  welcomeUsername.textContent = user.username;
+
+  // Username + admin badge
+  if (user.role === 'admin') {
+    welcomeUsername.innerHTML = `
+      ${user.username}
+      <span class="badge bg-warning ms-2">ADMIN</span>
+    `;
+  } else {
+    welcomeUsername.textContent = user.username;
+  }
+
+  // Bio (this was missing before)
+  welcomeBio.textContent = user.bio || '';
 }
+
+
+// Load profile data into form when "Profile" is clicked
+function loadProfile() {
+  const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+
+  document.getElementById('profileUsername').value = loggedInUser.username;
+  document.getElementById('profilePassword').value = loggedInUser.password;
+  document.getElementById('profileBio').value = loggedInUser.bio || "";
+}
+
 
 
 // AID RECORDING & DISPLAY TOGGLE
@@ -186,34 +215,64 @@ aidForm.addEventListener('submit', (e) => {
 
   const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
 
-  const newAid = {
-    id: Date.now(),
-    type: aidType.value,
-    quantity: aidQuantity.value,
-    beneficiary: aidBeneficiary.value,
-    date: aidDate.value,
-    recordedBy: loggedInUser.username
-  };
+  const editingAidId = localStorage.getItem('editingAidId');
 
-  const aids = JSON.parse(localStorage.getItem('aids')) || [];
+const newAid = {
+  id: editingAidId ? Number(editingAidId) : Date.now(),
+  type: aidType.value,
+  quantity: aidQuantity.value,
+  beneficiary: aidBeneficiary.value,
+  date: aidDate.value,
+  recordedBy: editingAidId
+    ? JSON.parse(localStorage.getItem('originalRecorder'))
+    : loggedInUser.username,
+  updatedBy: editingAidId ? loggedInUser.username : null
+};
+
+
+  let aids = JSON.parse(localStorage.getItem('aids')) || [];
+
+const index = aids.findIndex(aid => aid.id === newAid.id);
+
+if (index > -1) {
+  // EDIT MODE → replace existing record
+  aids[index] = newAid;
+} else {
+  // NEW RECORD → add
   aids.push(newAid);
+}
+
+localStorage.setItem('aids', JSON.stringify(aids));
+
+// clear edit state
+localStorage.removeItem('editingAidId');
+localStorage.removeItem('originalRecorder');
+
   localStorage.setItem('aids', JSON.stringify(aids));
 
   aidForm.reset();
   alert('Aid record saved successfully');
 });
+
+
+
 // ===== AID RECORD DISPLAY =====
 
 function loadAidRecords() {
   const tbody = document.getElementById('aid-table-body');
   const aids = JSON.parse(localStorage.getItem('aids')) || [];
   const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+  const users = JSON.parse(localStorage.getItem('users')) || [];
+
 
   tbody.innerHTML = '';
 
   aids.forEach(aid => {
     const isOwner = aid.recordedBy === loggedInUser.username;
     const isAdmin = loggedInUser.role === 'admin'; // ✅ check admin role
+    const recordUser = users.find(u => u.username === aid.recordedBy);
+    const bio = recordUser?.bio || '';
+
 
     const row = document.createElement('tr');
     row.innerHTML = `
@@ -221,13 +280,20 @@ function loadAidRecords() {
       <td>${aid.quantity}</td>
       <td>${aid.beneficiary}</td>
       <td>${aid.date}</td>
-      <td>${aid.recordedBy}</td>
+      <td>
+          <strong>${aid.recordedBy}</strong><br>
+          <small class="text-muted">${bio}</small>
+      </td>
+
       <td>
         ${
           isOwner || isAdmin  // ✅ allow if owner OR admin
             ? `
-              <button class="btn btn-sm btn-warning" onclick="editAid(${aid.id})">Edit</button>
-              <button class="btn btn-sm btn-danger" onclick="deleteAid(${aid.id})">Delete</button>
+              <div class="d-flex gap-2">
+                <button class="btn btn-sm btn-outline-warning" onclick="editAid(${aid.id})">✏️ Edit</button>
+                <button class="btn btn-sm btn-outline-danger" onclick="deleteAid(${aid.id})">🗑 Delete</button>
+              </div>
+
             `
             : `<span class="text-muted">No access</span>`
         }
@@ -248,23 +314,85 @@ function deleteAid(id) {
   loadAidRecords();
 }
 
+
+//edit functionality: when user clicks "Edit", we load the aid data into the form and delete the old record. This way, when they save, it creates a new record with the updated info but keeps the same "recordedBy" for accountability.
 // When user clicks "Edit", we load the aid data into the form and delete the old record.
 function editAid(id) {
   const aids = JSON.parse(localStorage.getItem('aids')) || [];
   const aid = aids.find(a => a.id === id);
-
   if (!aid) return;
 
-  // show the add/edit form
+  // Save edit context
+  localStorage.setItem('editingAidId', id);
+  localStorage.setItem('originalRecorder', JSON.stringify(aid.recordedBy));
+
+  // Show form
   addAidSection.classList.remove('d-none');
   recordsSection.classList.add('d-none');
 
-  // prefill the form
+  // Prefill form
   aidType.value = aid.type;
   aidQuantity.value = aid.quantity;
   aidBeneficiary.value = aid.beneficiary;
   aidDate.value = aid.date;
 
-  // remove old record so resaving = update
-  deleteAid(id);
+  // DO NOT delete yet
 }
+
+
+
+// ===== PROFILE MANAGEMENT =====
+const profileBtn = document.getElementById('profileBtn');
+const profileSection = document.getElementById('profile-section');
+
+profileBtn.addEventListener('click', () => {
+  profileSection.classList.remove('d-none');
+  addAidSection.classList.add('d-none');
+  recordsSection.classList.add('d-none');
+
+  loadProfile();
+});
+
+
+// When user submits profile form, we update their info in both "users" and "loggedInUser" in localStorage, then refresh the dashboard to show updated username and bio.
+document.getElementById('profile-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  let users = JSON.parse(localStorage.getItem('users')) || [];
+  let loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+
+  const newUsername = document.getElementById('profileUsername').value;
+  const newPassword = document.getElementById('profilePassword').value;
+  const newBio = document.getElementById('profileBio').value;
+
+  users = users.map(user => {
+    if (user.username === loggedInUser.username) {
+      return {
+        ...user,
+        username: newUsername,
+        password: newPassword,
+        bio: newBio
+      };
+    }
+    return user;
+  });
+
+
+  // Update loggedInUser object
+  loggedInUser.username = newUsername;
+  loggedInUser.password = newPassword;
+  loggedInUser.bio = newBio;
+
+  localStorage.setItem('users', JSON.stringify(users));
+  localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser));
+
+
+  showDashboard(loggedInUser);
+alert('Profile updated successfully!');
+
+// reset UI
+profileSection.classList.add('d-none');
+addAidSection.classList.add('d-none');
+recordsSection.classList.add('d-none');
+
+});
