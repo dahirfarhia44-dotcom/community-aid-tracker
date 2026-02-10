@@ -252,6 +252,12 @@ localStorage.removeItem('originalRecorder');
 
   aidForm.reset();
   alert('Aid record saved successfully');
+
+  // After saving, return to records view
+addAidSection.classList.add('d-none');
+recordsSection.classList.remove('d-none');
+loadAidRecords();
+
 });
 
 
