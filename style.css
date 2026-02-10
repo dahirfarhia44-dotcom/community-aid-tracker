@@ -1,11 +1,12 @@
-body{
+body {
     background-color: #4F7963;
     font-family: 'Times New Roman', Times, serif;
 }
-#authentication{
+
+#authentication {
     width: 350px;
-    margin: auto;  
-    margin-top: 10em; 
+    margin: auto;
+    margin-top: 10em;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -15,29 +16,27 @@ body{
     justify-content: center;
 }
 
-#togglebuttons{
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin-top: 50px;
-  margin-bottom: 35px;
-  transition: transform 0.4s ease;
-  /*background-color: rgb(36, 223, 223);*/
+#togglebuttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 50px;
+    margin-bottom: 35px;
+    transition: transform 0.4s ease;
 }
 
 #togglebuttons.move-up {
-  transform: translateY(-40px);
+    transform: translateY(-40px);
 }
 
-.text{
+.text {
     text-decoration: underline;
     font-weight: bold;
     color: #E6B800;
     text-transform: uppercase;
-
 }
 
-.input{
+.input {
     width: 80%;
     padding: 8px;
     margin: 0.5px 0;
@@ -45,7 +44,8 @@ body{
     border-radius: 5px;
     font-size: 14px;
 }
-.submit{
+
+.submit {
     padding: 9px 15px;
     background-color: #28A745;
     color: #FFC107;
@@ -56,50 +56,25 @@ body{
     text-transform: uppercase;
 }
 
-/*#registerbtn{
-    padding: 10px 20px;
-    background-color: #28A745;
-    color: #FFC107;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    text-transform: uppercase;
-}
-
-
-#loginbtn{
-    padding: 10px 20px;
-    background-color: #28A745;
-    color: #FFC107;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    text-transform: uppercase;
-}*/
-
 .toggle-btn {
-  padding: 8px 16px;
-  border: 2px;
-  background: #28A745;
-  color: #FFC107;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
+    padding: 8px 16px;
+    border: 2px solid transparent;
+    background: #28A745;
+    color: #FFC107;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
 }
 
-/* ACTIVE STATE */
 .toggle-btn.active {
-  background-color: #4F7963;
-  color: white;
+    background-color: #4F7963;
+    color: white;
 }
 
-
-/*resposiveness*/
+/* Responsiveness */
 @media (max-width: 768px) {
-    #authentication{
+    #authentication {
         width: 85%;
         margin-top: 10px;
         margin-bottom: 10px;
@@ -138,7 +113,6 @@ body{
     }
 }
 
-
 @media (max-width: 768px) {
     .text {
         font-size: 16px;
@@ -155,7 +129,6 @@ body{
     }
 }
 
-/* Mobile (max-width: 480px) */
 @media (max-width: 480px) {
     .text {
         font-size: 14px;
@@ -172,7 +145,6 @@ body{
     }
 }
 
-/* Very small screens (max-width: 320px) */
 @media (max-width: 320px) {
     .text {
         font-size: 12px;
@@ -188,11 +160,3 @@ body{
         padding: 5px 8px;
     }
 }
-/*#regesterform{
-    display: none;
-}
-
-#loginform{
-    display: none;
-}*/
-
