@@ -354,9 +354,3 @@ document.getElementById('profile-form').addEventListener('submit', (e) => {
 
 
 
-
-// When showing a form:
-toggleButtons.classList.add('move-up');
-
-// When hiding forms:
-toggleButtons.classList.remove('move-up');
