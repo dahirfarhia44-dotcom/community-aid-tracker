@@ -23,6 +23,28 @@ const welcomeBio = document.getElementById('welcome-bio');
 const profileBtn = document.getElementById('profileBtn');
 const profileSection = document.getElementById('profile-section');
 
+
+// 2️⃣ DEFAULT ADMIN SEED
+// ============================
+
+const defaultAdmin = {
+    username: "admin",
+    email: "admin@community.org",
+    password: "admin123",
+    role: "admin",
+    bio: "System administrator overseeing community aid records."
+};
+
+let users = JSON.parse(localStorage.getItem("users")) || [];
+const adminExists = users.some(user => user.role === "admin");
+
+if (!adminExists) {
+    users.push(defaultAdmin);
+    localStorage.setItem("users", JSON.stringify(users));
+    console.log("Default admin created!");
+}
+
+
 // Initialize - show login form by default
 document.addEventListener('DOMContentLoaded', function() {
     displayloginForm.classList.remove('d-none');
@@ -40,6 +62,8 @@ registerbtn.addEventListener('click', () => {
     registerbtn.classList.remove('btn-outline-success');
     loginbtn.classList.add('btn-outline-success');
     loginbtn.classList.remove('btn-success');
+
+    
 });
 
 loginbtn.addEventListener('click', () => {
@@ -327,3 +351,12 @@ document.getElementById('profile-form').addEventListener('submit', (e) => {
     // Reset UI
     profileSection.classList.add('d-none');
 });
+
+
+
+
+// When showing a form:
+toggleButtons.classList.add('move-up');
+
+// When hiding forms:
+toggleButtons.classList.remove('move-up');
